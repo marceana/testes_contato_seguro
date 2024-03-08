@@ -18,6 +18,7 @@ Serão avaliadas suas capacidades de leitura de código e resolução de problem
 # Resposta do participante
 
 _Responda aqui quais foram suas dificuldades e como fez para encontrar e resolver os problemas ao enviar a solução_
+
 Primeiramente eu ajustei o css da classe logo para alinhar a mesma ao centro mudando de "left" para "center", além de retirar o atributo class da imagem já que não seria necessário.
 Já no arquivo "crud.js", na classe MyCrud e na função update havia um erro que quando eu tentava editar um registro da tabela, ao invés colocar os valores que eu digitei na modal, os valores eram atualizados para as chaves do objeto inserido no array, então ficava "nome", "email", "telefone", "nascimento" e "cidade" no lugar dos reais valores digitados. Para ajustar isso só foi preciso atribuir os valores do objeto "map" a tabela, usando a chave "key" para acessar a propriedade certa.
 Na função delete só precisei usar o método splice que retira um registro do array passando um índice e a quantidade de valores a serem retirados a partir daquele índice e depois atualizar os valores da tabela no local storage.
