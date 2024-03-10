@@ -22,13 +22,19 @@ class ProductController
     public function getAll(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
+
         $isActive = isset($queryParams['isActive']) ? $queryParams['isActive'] : null;
         $isActiveBoolean = $isActive === 'true' ? true : false;
+
+        $category = isset($queryParams['category']) ? $queryParams['category'] : null;
+
         $adminUserId = $request->getHeader('admin_user_id')[0];
         var_dump($isActive);
 
         if ($isActive !== null) {
-            $stm = $this->service->getAllFiltered($adminUserId, $isActiveBoolean);
+            $stm = $this->service->getAllFilteredByIsActive($adminUserId, $isActiveBoolean);
+        } elseif ($category !== null) {
+            $stm = $this->service->getAllFilteredByCategory($adminUserId, $category);        
         } else {
             $stm = $this->service->getAll($adminUserId);
         }

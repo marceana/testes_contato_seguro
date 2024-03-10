@@ -29,7 +29,7 @@ class ProductService
         return $stm;
     }
 
-    public function getAllFiltered($adminUserId, $isActive)
+    public function getAllFilteredByIsActive($adminUserId, $isActive)
     {
         $isActiveFilter = $isActive ? 1 : 0;
 
@@ -45,6 +45,25 @@ class ProductService
         $stm = $this->pdo->prepare($query);
         $stm->bindParam(':adminUserId', $adminUserId);
         $stm->bindParam(':isActive', $isActiveFilter);
+        $stm->execute();
+
+        return $stm;
+    }
+
+    public function getAllFilteredByCategory($adminUserId, $category)
+    {
+        $query = "
+        SELECT p.*, c.title as category
+        FROM product p
+        INNER JOIN product_category pc ON pc.product_id = p.id
+        INNER JOIN category c ON c.id = pc.cat_id
+        WHERE p.company_id = :adminUserId
+        AND c.title = :category
+        ";
+
+        $stm = $this->pdo->prepare($query);
+        $stm->bindParam(':adminUserId', $adminUserId);
+        $stm->bindParam(':category', $category);
         $stm->execute();
 
         return $stm;

@@ -106,3 +106,6 @@ Já no terceiro problema eu optei por transformar o atributo category da classe 
 
 Para filtrar por produtos ativos ou inativos eu ajustei a função getAll da controladora para pegar os parâmetros da rota e verificando se o parâmetro "isActive" está setado e dentre eles e o transformo em valor booleano. Se a variável isActive for diferente de null eu chamo a função getAllFiltered do ProductService, se não eu chamo a getAll padrão. Na getAllFiltered eu só precisei verificar se a variável isActive é verdadeira ou falsa e então realizar a consulta SQL com o filtro a mais e além disso eu bindei os valores das variáveis aos placeholders da query SQL pois acredito que seja uma forma mais segura de realizar a query. Não sei se essa seria a melhor forma de fazer filtragem nesse caso mas foi a forma que consegui pensar, caso possa melhorar gostaria ed saber.
 ![getAllFilteredFunction](image-3.png)
+
+Para filtar por categoria eu somente adicionei um caso na função getAll para se houver o parâmetro "category" então chamar a função getAllFilteredByCategory (e alterei o nome da função do isActive para getAllFilteredByIsActive) e na função getAllFilteredByCategory eu realizei a query SQL com os joins necessários utilizando os parâmetros recebidos. Não gostei muito da abordagem com if e else e sei que poderia ser melhorada
+![alt text](image-4.png)
