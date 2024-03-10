@@ -28,13 +28,16 @@ class ProductController
 
         $category = isset($queryParams['category']) ? $queryParams['category'] : null;
 
+        $orderByDate = isset($queryParams['orderByDate']) ? $queryParams['orderByDate'] : null;
+
         $adminUserId = $request->getHeader('admin_user_id')[0];
-        var_dump($isActive);
 
         if ($isActive !== null) {
             $stm = $this->service->getAllFilteredByIsActive($adminUserId, $isActiveBoolean);
         } elseif ($category !== null) {
             $stm = $this->service->getAllFilteredByCategory($adminUserId, $category);        
+        } elseif ($orderByDate !== null) {
+            $stm = $this->service->getAllOrderedByDate($adminUserId, $orderByDate);       
         } else {
             $stm = $this->service->getAll($adminUserId);
         }

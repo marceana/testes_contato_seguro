@@ -69,6 +69,25 @@ class ProductService
         return $stm;
     }
 
+    public function getAllOrderedByDate($adminUserId, $orderByDate)
+    {
+        $validOrderByDate = in_array($orderByDate, ['ASC', 'DESC']) ? $orderByDate : 'ASC';
+
+        $query = "
+        SELECT p.*, c.title as category
+        FROM product p
+        INNER JOIN product_category pc ON pc.product_id = p.id
+        INNER JOIN category c ON c.id = pc.cat_id
+        WHERE p.company_id = :adminUserId
+        ORDER BY p.created_at " . $validOrderByDate;
+
+        $stm = $this->pdo->prepare($query);
+        $stm->bindParam(':adminUserId', $adminUserId);
+        $stm->execute();
+
+        return $stm;
+    }
+
     public function getOne($id)
     {
         $stm = $this->pdo->prepare("
