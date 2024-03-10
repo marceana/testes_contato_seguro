@@ -18,12 +18,33 @@ class ProductService
             SELECT p.*, c.title as category
             FROM product p
             INNER JOIN product_category pc ON pc.product_id = p.id
-            INNER JOIN category c ON c.id = pc.id
+            INNER JOIN category c ON c.id = pc.cat_id
             WHERE p.company_id = {$adminUserId}
         ";
 
         $stm = $this->pdo->prepare($query);
 
+        $stm->execute();
+
+        return $stm;
+    }
+
+    public function getAllFiltered($adminUserId, $isActive)
+    {
+        $isActiveFilter = $isActive ? 1 : 0;
+
+        $query = "
+        SELECT p.*, c.title as category
+        FROM product p
+        INNER JOIN product_category pc ON pc.product_id = p.id
+        INNER JOIN category c ON c.id = pc.cat_id
+        WHERE p.company_id = :adminUserId
+        AND p.active = :isActive
+        ";
+
+        $stm = $this->pdo->prepare($query);
+        $stm->bindParam(':adminUserId', $adminUserId);
+        $stm->bindParam(':isActive', $isActiveFilter);
         $stm->execute();
 
         return $stm;

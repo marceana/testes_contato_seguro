@@ -21,23 +21,39 @@ class ProductController
 
     public function getAll(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
+        $queryParams = $request->getQueryParams();
+        $isActive = isset($queryParams['isActive']) ? $queryParams['isActive'] : null;
+        $isActiveBoolean = $isActive === 'true' ? true : false;
         $adminUserId = $request->getHeader('admin_user_id')[0];
-        
-        $stm = $this->service->getAll($adminUserId);
-        $response->getBody()->write(json_encode($stm->fetchAll()));
-        return $response->withStatus(200);
-    }
+        var_dump($isActive);
 
+        if ($isActive !== null) {
+            $stm = $this->service->getAllFiltered($adminUserId, $isActiveBoolean);
+        } else {
+            $stm = $this->service->getAll($adminUserId);
+        }
+        $response->getBody()->write(json_encode($stm->fetchAll()));
+        return $response->withStatus(200); 
+    }
+    
     public function getOne(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $stm = $this->service->getOne($args['id']);
         $product = Product::hydrateByFetch($stm->fetch());
 
         $adminUserId = $request->getHeader('admin_user_id')[0];
-        $productCategory = $this->categoryService->getProductCategory($product->id)->fetch();
-        $fetchedCategory = $this->categoryService->getOne($adminUserId, $productCategory->id)->fetch();
-        $product->setCategory($fetchedCategory->title);
+        $productCategories = $this->categoryService->getProductCategory($product->id)->fetchAll();
 
+        $fetchedCategories = [];
+        foreach ($productCategories as $productCategory) {
+            $fetchedCategory = $this->categoryService->getOne($adminUserId, $productCategory->id)->fetch();
+
+            if ($fetchedCategory) {
+                $fetchedCategories[] = $fetchedCategory->title;
+            }
+        }
+
+        $product->setCategories($fetchedCategories);
         $response->getBody()->write(json_encode($product));
         return $response->withStatus(200);
     }
