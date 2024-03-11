@@ -221,4 +221,21 @@ class ProductService
 
         return $stm;
     }
+
+    public function getLogLastUpdate($id)
+    {
+        $stm = $this->pdo->prepare("
+            SELECT *
+            FROM product_log
+            WHERE product_id = :$id
+            AND action = 'update'
+            ORDER BY timestamp DESC
+            LIMIT 1
+        ");
+        
+        $stm->bindParam(':id', $id);
+        $stm->execute();
+
+        return $stm;
+    }
 }

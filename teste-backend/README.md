@@ -79,11 +79,11 @@ Para a listagem de produtos:
 
 ### Logs
 
-- [ ] Gostaria de saber qual usuário mudou o preço do produto `iphone 8` por último.
+- [x] Gostaria de saber qual usuário mudou o preço do produto `iphone 8` por último.
 
 ### Extra
 
-- [ ] Aqui fica um desafio extra **opcional**: _criar um ambiente com_ Docker _para a api_.
+- [x] Aqui fica um desafio extra **opcional**: _criar um ambiente com_ Docker _para a api_.
 
 **Seu trabalho é atender às 7 demandas solicitadas pelo cliente.**
 
@@ -115,3 +115,6 @@ Já para a ordeção pela data de criação eu adicionei mais um caso na funçã
 
 No caso do relatório eu mudei a query SQL da função getLog para mostrar somente a "action" e o "timestamp" do log, depois eu ajustei a função generate da controladora de report, primeiro adicionando um array com as traduções das ações, depois ajustando o relatorio pra mostrar somente nome de usuário, tipo de alteração e data, além disso fiz um foreach para cada log daquele produto e dentro dele eu checo se há a tradução disponível no array "actionTranslations" pra daí então usar a tradução em português, se não eu uso o valor da ação original. Depois eu só montei o objeto na variável "data" para retornar isso visualemente pro usuário.
 ![actionTranslations](image-7.png) ![logs](image-8.png)
+
+Para tornar possível descobrir a última atualização em um produto eu criei um método chamado getLogLastUpdate no serviço de produtos e nele criei uma query pra buscar pelo id do produto o último log com a ação "update" o ordenei de forma descrescente pela coluna timestamp, além disso limitei o retorno a somente 1 resultado.
+![getLogLastUpdate](image-9.png)
