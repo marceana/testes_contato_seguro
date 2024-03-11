@@ -68,7 +68,7 @@ Para a listagem de produtos:
 
 ### Relatório
 
-- [ ] O relatório não está mostrando a coluna de logs corretamente, se possível, gostaria de trazer no seguinte formato:
+- [x] O relatório não está mostrando a coluna de logs corretamente, se possível, gostaria de trazer no seguinte formato:
       (Nome do usuário, Tipo de alteração e Data),
       (Nome do usuário, Tipo de alteração e Data),
       (Nome do usuário, Tipo de alteração e Data)
@@ -112,3 +112,6 @@ Para filtar por categoria eu somente adicionei um caso na função getAll para s
 
 Já para a ordeção pela data de criação eu adicionei mais um caso na função getAll para o parâmetro "orderByDate" dessa vez e criei o método getAllOrderedByDate do serviço, dentro dela eu validei se o parâmetro está vindo corretamente e então eu interpolei o mesmo na consulta SQL porque o binding não funciona em partes dinâmicas do código que nao sejam valores de dados. Adicionei um produto novo para fazer o teste no Insomnia.
 ![getAllOrderedByDate](image-5.png) ![consulta no insomnia](image-6.png)
+
+No caso do relatório eu mudei a query SQL da função getLog para mostrar somente a "action" e o "timestamp" do log, depois eu ajustei a função generate da controladora de report, primeiro adicionando um array com as traduções das ações, depois ajustando o relatorio pra mostrar somente nome de usuário, tipo de alteração e data, além disso fiz um foreach para cada log daquele produto e dentro dele eu checo se há a tradução disponível no array "actionTranslations" pra daí então usar a tradução em português, se não eu uso o valor da ação original. Depois eu só montei o objeto na variável "data" para retornar isso visualemente pro usuário.
+![actionTranslations](image-7.png) ![logs](image-8.png)

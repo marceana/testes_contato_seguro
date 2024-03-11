@@ -213,7 +213,7 @@ class ProductService
     public function getLog($id)
     {
         $stm = $this->pdo->prepare("
-            SELECT *
+            SELECT action, timestamp
             FROM product_log
             WHERE product_id = {$id}
         ");
